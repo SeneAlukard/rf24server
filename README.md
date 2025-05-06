@@ -97,10 +97,6 @@ We ignore:
 
 ## 📜 License
 
-MIT License (or specify your own)
+MIT License 
 
 ---
-
-## 🙋‍♂️ Contributing
-
-Contributions are welcome — feel free to fork and submit PRs.
