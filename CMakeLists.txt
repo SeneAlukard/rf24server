@@ -1,25 +1,26 @@
 cmake_minimum_required(VERSION 3.12)
-project(rfServer CXX)
+project(drone LANGUAGES CXX)
 
 # Set C++ version
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Export compile_commands.json
+# Export compile_commands.json for tooling (e.g., clangd)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# Add include path
+# Add header files (include/)
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
-# Find all source files in src/
-file(GLOB_RECURSE SOURCES "${CMAKE_SOURCE_DIR}/src/*.cpp")
+# Collect all .cpp source files in src/
+file(GLOB_RECURSE SRC_FILES CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/src/*.cpp")
 
-# Create the executable
-add_executable(rfServer ${SOURCES})
+# Define the executable target
+add_executable(drone ${SRC_FILES})
 
-# Link RF24 (modify if needed)
-target_link_libraries(rfServer rf24)
-# Symlink compile_commands.json to project root
+# Link with RF24 (assumed to be installed system-wide)
+target_link_libraries(drone PRIVATE rf24)
+
+# Optionally create symlink for compile_commands.json at project root
 if(CMAKE_EXPORT_COMPILE_COMMANDS)
   execute_process(
     COMMAND ${CMAKE_COMMAND} -E create_symlink
@@ -28,4 +29,11 @@ if(CMAKE_EXPORT_COMPILE_COMMANDS)
     RESULT_VARIABLE link_result
   )
 endif()
+
+# Add a custom 'run' target to build and execute
+add_custom_target(run
+  DEPENDS drone
+  COMMAND drone
+  COMMENT "🚀 Running drone"
+)
 

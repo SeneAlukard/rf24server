@@ -81,6 +81,11 @@ int main(int argc, char *argv[]) {
 
   if (argc == 1)
     std::cout << *argv << "\n";
+  else {
+    std::cerr << "Inccorrect usage: \nUse like this: ./rfserver <no argument>"
+              << std::endl;
+    return 1;
+  }
 
   std::cout << "Input argument count: " << argc << "\n";
 
